@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cassava - รายจ่าย</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #f0f0f0;
+        }
+        .navbar {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar ul {
+            list-style-type: none;
+            display: flex;
+        }
+        .navbar li {
+            margin-right: 20px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="number"], input[type="date"], select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            background-color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div>Cassava</div>
+        <ul>
+            <li><a href="#">แดชบอร์ด</a></li>
+            <li><a href="#">จัดการการปลูก</a></li>
+            <li><a href="#">ติดตามการปลูก</a></li>
+            <li><a href="#">บันทึกการเก็บเกี่ยว</a></li>
+            <li><a href="#">พยากรณ์อากาศ</a></li>
+            <li><a href="income.html">รายรับ</a></li>
+            <li><a href="expense.html">รายจ่าย</a></li>
+            <li><a href="expense_table.html">ตารางรายจ่าย</a></li>
+            <li><a href="#">รายงาน</a></li>
+        </ul>
+        <div>ภาสนิน ครีบูล</div>
+    </nav>
+
+    <div class="container">
+        <h1>รายจ่าย</h1>
+        <form id="expense-form" action="#" method="POST">
+            <div class="form-group">
+                <label for="expense-category">หมวดหมู่:</label>
+                <select id="expense-category" aria-label="หมวดหมู่รายจ่าย">
+                    <option value="">เลือกหมวดหมู่</option>
+                    <option value="ปุ๋ย">ปุ๋ย</option>
+                    <option value="เครื่องมือ">เครื่องมือ</option>
+                    <option value="แรงงาน">แรงงาน</option>
+                    <option value="ยาฆ่าแมลง">ยาฆ่าแมลง</option>
+                    <option value="ค่าน้ำ">ค่าน้ำ</option>
+                    <option value="ค่าไฟฟ้า">ค่าไฟฟ้า</option>
+                    <option value="เชื้อเพลิง">เชื้อเพลิง</option>
+                    <option value="ขนส่ง">ขนส่ง</option>
+                    <option value="ซ่อมแซม">ซ่อมแซม</option>
+                    <option value="อื่น ๆ">อื่น ๆ</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="expense-amount">จำนวนเงิน:</label>
+                <input type="number" id="expense-amount" aria-label="จำนวนเงินรายจ่าย">
+            </div>
+            <div class="form-group">
+                <label for="expense-date">วันที่:</label>
+                <input type="date" id="expense-date" aria-label="วันที่รายจ่าย">
+            </div>
+            <div class="form-group">
+                <label for="expense-note">รายละเอียด:</label>
+                <input type="text" id="expense-note" aria-label="รายละเอียดรายจ่าย">
+            </div>
+            <button type="submit">บันทึก</button>
+        </form>
+    </div>
+
+    <script>
+        document.querySelector('#expense-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const category = document.querySelector('#expense-category').value;
+            const amount = document.querySelector('#expense-amount').value;
+            const date = document.querySelector('#expense-date').value;
+            const note = document.querySelector('#expense-note').value;
+
+            const expense = {
+                category,
+                amount,
+                date,
+                note
+            };
+
+            let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+            expenses.push(expense);
+            localStorage.setItem('expenses', JSON.stringify(expenses));
+
+            alert('บันทึกข้อมูลเรียบร้อย!');
+            document.querySelector('#expense-form').reset();
+        });
+    </script>
+</body>
+</html>

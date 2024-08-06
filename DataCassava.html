@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แสดงข้อมูลแปลงมันสำปะหลัง</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        nav.navbar {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar ul {
+            list-style-type: none;
+            display: flex;
+            gap: 1.5rem;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar li {
+            margin-right: 20px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+        }
+        .navbar a:hover, .navbar a.active {
+            color: #e2e8f0;
+            background-color: #2d3748;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        .header h1 {
+            color: #2d3748;
+            font-size: 1.5rem;
+        }
+        .header .add-button {
+            background-color: #007BFF;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: none; /* เอาเส้นใต้ลิงก์ออก */
+            display: inline-block; /* ทำให้ลิงก์มีลักษณะเป็นบล็อกเพื่อให้ปุ่มดูเหมือนปกติ */
+            text-align: center; /* จัดกลางข้อความ */
+            transition: background-color 0.3s;
+        }
+        .header .add-button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+        th, td {
+            border: 1px solid #d1d5db;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+            color: #2d3748;
+            font-weight: bold;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .edit-button {
+            background-color: #28a745;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: background-color 0.3s;
+        }
+        .edit-button:hover {
+            background-color: #218838;
+        }
+        .delete-button {
+            background-color: #f44336;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: background-color 0.3s;
+        }
+        .delete-button:hover {
+            background-color: #e53935;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div>Cassava</div>
+        <ul>
+            <li><a href="Dashbord.html">แดชบอร์ด</a></li>
+            <li><a href="DataCassava.html">ข้อมูลแปลง</a></li>
+            <li><a href="Cassava Harvesting.html">บันทึกการเก็บเกี่ยว</a></li>
+            <li><a href="weather.html">พยากรณ์อากาศ</a></li>
+            <li><a href="Income and Expense_table.html">รายรับรายจ่าย</a></li>
+            <li><a href="Income and Expense Analysis.html">สรุปรายรับรายจ่าย</a></li>
+            <li><a href="Report.html">รายงาน</a></li>
+        </ul>
+        <div>ภาสนิน ครีบูล</div>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>ข้อมูลแปลงมันสำปะหลัง</h1>
+            <a href="AddDataCassava.html" class="add-button">เพิ่มข้อมูล</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ชื่อแปลง</th>
+                    <th>ขนาด (ไร่)</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="plotData">
+                <!-- ข้อมูลจะถูกเพิ่มที่นี่ด้วย JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // ตัวอย่างข้อมูลแปลงมันสำปะหลัง
+        const plots = [
+            { name: 'แปลง 1', area: 10.5 },
+            { name: 'แปลง 2', area: 8.0 },
+            // เพิ่มข้อมูลแปลงอื่น ๆ ได้ที่นี่
+        ];
+
+        function renderPlots() {
+            const tableBody = document.getElementById('plotData');
+            tableBody.innerHTML = '';
+
+            plots.forEach((plot, index) => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${plot.name}</td>
+                    <td>${plot.area} ไร่</td>
+                    <td class="actions">
+                        <button class="edit-button" onclick="editPlot(${index})">แก้ไข</button>
+                        <button class="delete-button" onclick="deletePlot(${index})">ลบ</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function editPlot(index) {
+            alert(`แก้ไขข้อมูลแปลงที่ ${index + 1}`);
+            // ฟังก์ชันสำหรับการแก้ไขข้อมูล
+        }
+
+        function deletePlot(index) {
+            if (confirm('คุณต้องการลบแปลงนี้หรือไม่?')) {
+                plots.splice(index, 1);
+                renderPlots();
+            }
+        }
+
+        // เรียกใช้งานฟังก์ชันเพื่อแสดงข้อมูลเมื่อโหลดหน้า
+        renderPlots();
+    </script>
+</body>
+</html>

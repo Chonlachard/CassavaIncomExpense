@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>บันทึกข้อมูลแปลงมันสำปะหลัง</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        form {
+            display: grid;
+            gap: 15px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .button-container {
+            display: flex;
+            justify-content: flex-start;
+            gap: 10px;
+        }
+        button, .back-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none; 
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+        button:hover, .back-button:hover {
+            background-color: #45a049;
+        }
+        .back-button {
+            background-color: #f44336;
+        }
+        .back-button:hover {
+            background-color: #e53935;
+        }
+        #map {
+            width: 100%;
+            height: 400px;
+            margin-top: 15px;
+        }
+        #mapInstructions {
+            margin-top: 10px;
+            font-style: italic;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>บันทึกข้อมูลแปลงมันสำปะหลัง</h1>
+        <form id="plotForm">
+            <div>
+                <label for="plotName">ชื่อแปลง:</label>
+                <input type="text" id="plotName" name="plotName" required>
+            </div>
+            <div>
+                <label for="area">ขนาด (ไร่):</label>
+                <input type="number" id="area" name="area" step="0.01" required>
+            </div>
+            <div>
+                <label for="map">ตำแหน่งแปลง:</label>
+                <div id="map"></div>
+                <p id="mapInstructions">คลิกบนแผนที่เพื่อปักหมุดตำแหน่งแปลง</p>
+            </div>
+            <div class="button-container">
+                <button type="submit">บันทึกข้อมูล</button>
+                <a href="DataCassava.html" class="back-button">กลับ</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let map;
+        let marker;
+
+        function initMap() {
+            // ตำแหน่งเริ่มต้น (กรุงเทพมหานคร)
+            const initialPosition = { lat: 13.7563, lng: 100.5018 };
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: initialPosition,
+                zoom: 8
+            });
+
+            map.addListener('click', function(e) {
+                placeMarker(e.latLng);
+            });
+        }
+
+        function placeMarker(latLng) {
+            if (marker) {
+                marker.setPosition(latLng);
+            } else {
+                marker = new google.maps.Marker({
+                    position: latLng,
+                    map: map
+                });
+            }
+        }
+
+        document.getElementById('plotForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!marker) {
+                alert('กรุณาเลือกตำแหน่งแปลงบนแผนที่');
+                return;
+            }
+
+            const plotName = document.getElementById('plotName').value;
+            const area = document.getElementById('area').value;
+            const position = marker.getPosition();
+
+            const output = `บันทึกข้อมูลแปลงเรียบร้อยแล้ว:
+ชื่อแปลง: ${plotName}
+ขนาด: ${area} ไร่
+ตำแหน่ง: ละติจูด ${position.lat().toFixed(6)}, ลองจิจูด ${position.lng().toFixed(6)}`;
+
+            alert(output);
+            this.reset();
+            marker.setMap(null);
+            marker = null;
+        });
+    </script>
+    <!-- ในการใช้งานจริง ให้แทนที่ YOUR_API_KEY ด้วย API Key ของคุณ -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+</body>
+</html>
