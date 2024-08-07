@@ -152,6 +152,7 @@
         <table>
             <thead>
                 <tr>
+                    <th>รูปภาพ</th>
                     <th>ชื่อแปลง</th>
                     <th>ขนาด (ไร่)</th>
                     <th></th>
@@ -166,8 +167,8 @@
     <script>
         // ตัวอย่างข้อมูลแปลงมันสำปะหลัง
         const plots = [
-            { name: 'แปลง 1', area: 10.5 },
-            { name: 'แปลง 2', area: 8.0 },
+            { name: 'แปลง 1', area: 10.5, imageUrl: 'https://via.placeholder.com/100' },
+            { name: 'แปลง 2', area: 8.0, imageUrl: 'https://via.placeholder.com/100' },
             // เพิ่มข้อมูลแปลงอื่น ๆ ได้ที่นี่
         ];
 
@@ -179,6 +180,7 @@
                 const row = document.createElement('tr');
                 
                 row.innerHTML = `
+                    <td><img src="${plot.imageUrl}" alt="รูปภาพของ ${plot.name}" width="100"></td>
                     <td>${plot.name}</td>
                     <td>${plot.area} ไร่</td>
                     <td class="actions">

@@ -32,7 +32,8 @@
             font-weight: bold;
         }
         input[type="text"],
-        input[type="number"] {
+        input[type="number"],
+        input[type="file"] {
             width: 100%;
             padding: 8px;
             border: 1px solid #ddd;
@@ -79,7 +80,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>บันทึกข้อมูลแปลงมันสำปะหลัง</h1>
+        <h1>เพิ่มข้อมูลแปลงมันสำปะหลัง</h1>
         <form id="plotForm">
             <div>
                 <label for="plotName">ชื่อแปลง:</label>
@@ -88,6 +89,10 @@
             <div>
                 <label for="area">ขนาด (ไร่):</label>
                 <input type="number" id="area" name="area" step="0.01" required>
+            </div>
+            <div>
+                <label for="image">รูปภาพแปลง:</label>
+                <input type="file" id="image" name="image" accept="image/*">
             </div>
             <div>
                 <label for="map">ตำแหน่งแปลง:</label>
@@ -140,11 +145,13 @@
             const plotName = document.getElementById('plotName').value;
             const area = document.getElementById('area').value;
             const position = marker.getPosition();
+            const image = document.getElementById('image').files[0];
 
             const output = `บันทึกข้อมูลแปลงเรียบร้อยแล้ว:
 ชื่อแปลง: ${plotName}
 ขนาด: ${area} ไร่
-ตำแหน่ง: ละติจูด ${position.lat().toFixed(6)}, ลองจิจูด ${position.lng().toFixed(6)}`;
+ตำแหน่ง: ละติจูด ${position.lat().toFixed(6)}, ลองจิจูด ${position.lng().toFixed(6)}
+รูปภาพ: ${image ? image.name : 'ไม่ได้เลือก'}`;
 
             alert(output);
             this.reset();
